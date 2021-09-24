@@ -3,3 +3,11 @@ spring:
     name: auth-service
 server:
   port: 8100
+com:
+  cxtuan:
+    jwt:
+      secret: cxtuan2012
+      expired: 1000
+      refreshexpired: 10
+      header: Authentication
+      signature: Bearer
