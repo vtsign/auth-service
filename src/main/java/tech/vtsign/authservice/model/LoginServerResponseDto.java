@@ -14,7 +14,9 @@ import java.util.UUID;
 public class LoginServerResponseDto {
     private UUID id;
     private String email;
+    @JsonProperty("first_name")
     private String firstName;
+    @JsonProperty("last_name")
     private String lastName;
     private String phone;
     private String organization;

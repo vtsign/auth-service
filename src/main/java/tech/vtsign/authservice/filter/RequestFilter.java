@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class RequestFilter implements Filter {
+public class RequestFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
     @Override

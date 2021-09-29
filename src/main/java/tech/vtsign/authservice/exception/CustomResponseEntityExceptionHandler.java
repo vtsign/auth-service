@@ -34,7 +34,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({TokenMissingException.class})
     public final ResponseEntity<Object> handleTokenMissingException(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
-                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false), HttpStatus.BAD_REQUEST.value());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
@@ -43,8 +43,15 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler(TokenExpiredException.class)
     public final ResponseEntity<Object> handleTokenExpiredException(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
-                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false), HttpStatus.UNAUTHORIZED.value());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(RequestException.class)
+    public final ResponseEntity<Object> handleCallServiceException(RequestException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse();
+        BeanUtils.copyProperties(ex, exceptionResponse);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.valueOf(ex.getStatus()));
     }
 }

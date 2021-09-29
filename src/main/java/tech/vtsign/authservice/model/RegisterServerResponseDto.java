@@ -14,7 +14,9 @@ public class RegisterServerResponseDto {
     private UUID id;
     private String email;
     private String password;
+    @JsonProperty("first_name")
     private String firstName;
+    @JsonProperty("last_name")
     private String lastName;
     private String phone;
     private String organization;

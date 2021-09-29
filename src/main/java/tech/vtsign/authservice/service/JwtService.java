@@ -21,7 +21,6 @@ public class JwtService {
         RegisterClientResponseDto registerClientResponseDto = new RegisterClientResponseDto();
         BeanUtils.copyProperties(registerServerResponseDto, registerClientResponseDto);
         return registerClientResponseDto;
-
     }
 
     public LoginClientResponseDto login(LoginClientRequestDto loginClientRequestDto) {
@@ -46,6 +45,9 @@ public class JwtService {
 
     public RefreshTokenResponseDto refreshToken(String refreshToken) {
         String email = utils.getUsernameFromToken(refreshToken);
+        if (email == null) {
+
+        }
         if (utils.isTokenExpired(refreshToken)) {
             throw new TokenExpiredException("Refresh Token is expired. Please login again");
         }
