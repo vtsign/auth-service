@@ -3,11 +3,12 @@ spring:
     name: auth-service
 server:
   port: 8100
-com:
-  cxtuan:
+  servlet:
+    context-path: /auth
+tech:
+  vtsign:
     jwt:
-      secret: cxtuan2012
-      expired: 1000
-      refreshexpired: 10
-      header: Authentication
-      signature: Bearer
+      secret_key: Dv6iuSVHGcLmZ4lUIc9t2d2yfqJAPmicOwkpDKlRnOvNKTIsjFp-x3dBC0hLpxQ3
+      expired_token: 300
+      expired_refresh_token: 600
+      issuer: https://vtsign.tech/

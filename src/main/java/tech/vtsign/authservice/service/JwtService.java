@@ -1,74 +1,57 @@
 package tech.vtsign.authservice.service;
 
-
-//import com.cxtuan.springboottutorial.ConfigAuthent.UserDetailPriciple;
-//import com.cxtuan.springboottutorial.ConfigAuthent.UserDetailServicePriciple;
-//import com.cxtuan.springboottutorial.Controller.JWT.LoginRequest;
-//import com.cxtuan.springboottutorial.jwt.JWTUtils;
-//import com.cxtuan.springboottutorial.jwt.RefreshJWTRequest;
-//import com.cxtuan.springboottutorial.jwt.ResponeJWTRefresh;
-//import com.cxtuan.springboottutorial.jwt.jwtRespone;
-//import io.jsonwebtoken.ExpiredJwtException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import tech.vtsign.authservice.security.UserDetailPriciple;
-import tech.vtsign.authservice.security.UserDetailServicePriciple;
-import tech.vtsign.authservice.jwtmodel.JwtRespone;
-import tech.vtsign.authservice.utils.Jwtutils;
+import tech.vtsign.authservice.exception.TokenExpiredException;
+import tech.vtsign.authservice.model.*;
+import tech.vtsign.authservice.proxy.UserServiceProxy;
+import tech.vtsign.authservice.util.JwtUtil;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final JwtUtil utils;
+    private final UserServiceProxy userServiceProxy;
 
-    @Autowired
-    private Jwtutils jwtUtils;
-
-    @Autowired
-    private UserDetailServicePriciple userDetailServicePriciple;
-
-    public JwtRespone authenticate() throws BadCredentialsException {
-           UserDetailPriciple userDetailsPriciple = getUserDetail();
-//       UserDetailPriciple userDetails = (UserDetailPriciple) userDetailServicePriciple.loadUserByUsername(loginRequest.getUsername());
-
-       String jwt = jwtUtils.generateAccessToken(userDetailsPriciple);
-//        String refreshToken = jwtUtils.generateRefreshToken(userDetails);
-//
-//        List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
-//                .collect(Collectors.toList());
-        return new JwtRespone(jwt);
+    public RegisterClientResponseDto register(RegisterClientRequestDto registerClientRequestDto) {
+        RegisterServerRequestDto registerServerRequestDto = new RegisterServerRequestDto();
+        BeanUtils.copyProperties(registerClientRequestDto, registerServerRequestDto);
+        RegisterServerResponseDto registerServerResponseDto = userServiceProxy.register(registerServerRequestDto);
+        RegisterClientResponseDto registerClientResponseDto = new RegisterClientResponseDto();
+        BeanUtils.copyProperties(registerServerResponseDto, registerClientResponseDto);
+        return registerClientResponseDto;
 
     }
 
-//    public ResponeJWTRefresh refreshToken(RefreshJWTRequest request) throws ExpiredJwtException, SignatureException, UnsupportedJwtException, IllegalArgumentException, MalformedJwtException {
-//        String jwt = null;
-//        String requestRefreshToken = null;
-//
-//        requestRefreshToken = request.getRefreshToken();
-//        String username = jwtUtils.getUsernameFromToken(requestRefreshToken);
-//        System.out.println(username);
-//        UserDetailPriciple userDetails = (UserDetailPriciple) userDetailService.loadUserByUsername(username);
-//
-//        if (jwtUtils.validateToken(requestRefreshToken, userDetails)) {
-//            jwt = jwtUtils.generateAccessToken(userDetails);
-//        }
-//
-//        return new ResponeJWTRefresh(jwt, requestRefreshToken);
-//
-//    }
-
-    private UserDetailPriciple getUserDetail(/*LoginRequest loginRequest*/) {
-        //throw BadCridential if username password invalid
-//        Authentication authentication = authenticationManager
-//                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        UserDetailPriciple userDetails = (UserDetailPriciple) authentication.getDetails();
-        UserDetailPriciple userDetailsPriciple = (UserDetailPriciple) userDetailServicePriciple.loadUserByUsername("cxtuan");
-        return userDetailsPriciple;
+    public LoginClientResponseDto login(LoginClientRequestDto loginClientRequestDto) {
+        LoginServerRequestDto loginServerRequestDto = new LoginServerRequestDto();
+        BeanUtils.copyProperties(loginClientRequestDto, loginServerRequestDto);
+        LoginServerResponseDto loginServerResponseDto = userServiceProxy.login(loginServerRequestDto);
+        LoginClientResponseDto loginClientResponseDto = new LoginClientResponseDto();
+        String accessToken = utils.generateAccessToken(loginServerResponseDto.getEmail());
+        String refreshToken = utils.generateRefreshToken(loginServerResponseDto.getEmail());
+        loginClientResponseDto.setAccessToken(accessToken);
+        loginClientResponseDto.setRefreshToken(refreshToken);
+        BeanUtils.copyProperties(loginServerResponseDto, loginClientResponseDto);
+        return loginClientResponseDto;
     }
 
+    public String createJwt(String accessToken) {
+
+        String email = utils.getUsernameFromToken(accessToken);
+        LoginServerResponseDto loginServerResponseDto = userServiceProxy.retrieveUser(email);
+        return utils.generateAccessTokenObject(loginServerResponseDto);
+    }
+
+    public RefreshTokenResponseDto refreshToken(String refreshToken) {
+        String email = utils.getUsernameFromToken(refreshToken);
+        if (utils.isTokenExpired(refreshToken)) {
+            throw new TokenExpiredException("Refresh Token is expired. Please login again");
+        }
+        String newAccessToken = utils.generateAccessToken(email);
+        String newRefreshToken = utils.generateRefreshToken(email);
+        return RefreshTokenResponseDto.builder().accessToken(newAccessToken).refreshToken(newRefreshToken).build();
+    }
 }
 
