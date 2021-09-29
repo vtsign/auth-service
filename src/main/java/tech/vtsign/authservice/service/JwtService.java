@@ -49,6 +49,7 @@ public class JwtService {
         if (utils.isTokenExpired(refreshToken)) {
             throw new TokenExpiredException("Refresh Token is expired. Please login again");
         }
+
         String newAccessToken = utils.generateAccessToken(email);
         String newRefreshToken = utils.generateRefreshToken(email);
         return RefreshTokenResponseDto.builder().accessToken(newAccessToken).refreshToken(newRefreshToken).build();

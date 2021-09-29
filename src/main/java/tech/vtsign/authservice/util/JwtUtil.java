@@ -4,6 +4,7 @@ package tech.vtsign.authservice.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import tech.vtsign.authservice.model.LoginServerResponseDto;
@@ -39,7 +40,7 @@ public class JwtUtil {
     }
 
     //for retrieving any information from token we will need the secret key
-    private Claims getAllClaimsFromToken(String token) {
+    private Claims getAllClaimsFromToken(String token) throws SignatureException {
         return Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .build().parseClaimsJws(token).getBody();
