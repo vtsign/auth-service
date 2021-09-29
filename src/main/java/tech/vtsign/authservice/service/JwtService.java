@@ -3,7 +3,6 @@ package tech.vtsign.authservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import tech.vtsign.authservice.exception.TokenExpiredException;
 import tech.vtsign.authservice.model.*;
 import tech.vtsign.authservice.proxy.UserServiceProxy;
 import tech.vtsign.authservice.util.JwtUtil;
@@ -37,7 +36,6 @@ public class JwtService {
     }
 
     public String createJwt(String accessToken) {
-
         String email = utils.getUsernameFromToken(accessToken);
         LoginServerResponseDto loginServerResponseDto = userServiceProxy.retrieveUser(email);
         return utils.generateAccessTokenObject(loginServerResponseDto);
@@ -45,13 +43,6 @@ public class JwtService {
 
     public RefreshTokenResponseDto refreshToken(String refreshToken) {
         String email = utils.getUsernameFromToken(refreshToken);
-        if (email == null) {
-
-        }
-        if (utils.isTokenExpired(refreshToken)) {
-            throw new TokenExpiredException("Refresh Token is expired. Please login again");
-        }
-
         String newAccessToken = utils.generateAccessToken(email);
         String newRefreshToken = utils.generateRefreshToken(email);
         return RefreshTokenResponseDto.builder().accessToken(newAccessToken).refreshToken(newRefreshToken).build();
