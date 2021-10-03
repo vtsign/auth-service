@@ -2,6 +2,7 @@ package tech.vtsign.authservice.util;
 
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -40,7 +41,7 @@ public class JwtUtil {
     }
 
     //for retrieving any information from token we will need the secret key
-    private Claims getAllClaimsFromToken(String token) throws SignatureException {
+    private Claims getAllClaimsFromToken(String token) throws SignatureException, ExpiredJwtException {
         return Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .build().parseClaimsJws(token).getBody();

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import tech.vtsign.authservice.exception.TokenMissingException;
 import tech.vtsign.authservice.model.*;
 import tech.vtsign.authservice.service.JwtService;
 
@@ -29,8 +30,12 @@ public class LoginController {
 
     @PostMapping("/jwt")
     public ResponseEntity<?> generateJwt(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.substring("Bearer ".length());
-        String jwt = jwtService.createJwt(token);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new TokenMissingException("Must add header token Authorization Bearer: YOUR_TOKEN");
+
+        }
+        String accessToken = authHeader.substring("Bearer ".length());
+        String jwt = jwtService.createJwt(accessToken);
         return ResponseEntity.ok(jwt);
     }
 

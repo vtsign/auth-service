@@ -1,5 +1,6 @@
 package tech.vtsign.authservice.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.BeanUtils;
@@ -40,18 +41,18 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
 
-    @ExceptionHandler(TokenExpiredException.class)
-    public final ResponseEntity<Object> handleTokenExpiredException(Exception ex, WebRequest request) {
-        ExceptionResponse exceptionResponse =
-                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false), HttpStatus.UNAUTHORIZED.value());
-
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
-    }
-
     @ExceptionHandler(RequestException.class)
     public final ResponseEntity<Object> handleCallServiceException(RequestException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse();
         BeanUtils.copyProperties(ex, exceptionResponse);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.valueOf(ex.getStatus()));
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public final ResponseEntity<Object> handleExpiredJwtException(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(new Date(), "Token is expired", request.getDescription(false), HttpStatus.UNAUTHORIZED.value());
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
 }
