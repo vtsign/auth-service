@@ -1,14 +1,10 @@
 spring:
   application:
     name: auth-service
+  cloud:
+    config:
+      uri: http://vtsign.tech:8888
 server:
   port: 8100
   servlet:
     context-path: /auth
-tech:
-  vtsign:
-    jwt:
-      secret_key: Dv6iuSVHGcLmZ4lUIc9t2d2yfqJAPmicOwkpDKlRnOvNKTIsjFp-x3dBC0hLpxQ3
-      expired_token: 300
-      expired_refresh_token: 600
-      issuer: https://vtsign.tech/
