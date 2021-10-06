@@ -25,7 +25,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     @ExceptionHandler(value = {MalformedJwtException.class, SignatureException.class})
-    public final ResponseEntity<Object> handleTokenInvalid(Exception ex, WebRequest request) {
+    public final ResponseEntity<Object> handleTokenInvalid(MalformedJwtException  ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), "Token invalid", request.getDescription(false), HttpStatus.BAD_REQUEST.value());
 
@@ -33,7 +33,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     @ExceptionHandler({TokenMissingException.class})
-    public final ResponseEntity<Object> handleTokenMissingException(Exception ex, WebRequest request) {
+    public final ResponseEntity<Object> handleTokenMissingException(TokenMissingException ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false), HttpStatus.BAD_REQUEST.value());
 
@@ -49,10 +49,11 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
-    public final ResponseEntity<Object> handleExpiredJwtException(Exception ex, WebRequest request) {
+    public final ResponseEntity<Object> handleExpiredJwtException(ExpiredJwtException ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), "Token is expired", request.getDescription(false), HttpStatus.UNAUTHORIZED.value());
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
+
 }
