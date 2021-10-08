@@ -22,4 +22,5 @@ public class RegisterServerResponseDto {
     private String organization;
     private String address;
     private boolean enabled;
+    private boolean blocked;
 }
