@@ -27,4 +27,5 @@ public class LoginClientResponseDto {
     private String organization;
     private String address;
     private boolean enabled;
+    private boolean blocked;
 }

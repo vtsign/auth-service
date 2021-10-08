@@ -22,6 +22,7 @@ public class LoginServerResponseDto {
     private String organization;
     private String address;
     private boolean enabled;
+    private boolean blocked;
     private List<Role> roles;
     private List<Permission> permissions;
 }

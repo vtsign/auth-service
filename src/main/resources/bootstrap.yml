@@ -8,3 +8,5 @@ server:
   port: 8100
   servlet:
     context-path: /auth
+springdoc:
+  version: '1.0'

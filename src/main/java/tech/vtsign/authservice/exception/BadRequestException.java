@@ -2,10 +2,11 @@ package tech.vtsign.authservice.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class TokenMissingException extends RuntimeException {
+// 400
+public class BadRequestException extends RuntimeException {
     public static final HttpStatus status = HttpStatus.BAD_REQUEST;
 
-    public TokenMissingException(String message) {
+    public BadRequestException(String message) {
         super(message);
     }
 }
