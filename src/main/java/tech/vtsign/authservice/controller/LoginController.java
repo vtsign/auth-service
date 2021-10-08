@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import tech.vtsign.authservice.exception.TokenMissingException;
 import tech.vtsign.authservice.model.*;
 import tech.vtsign.authservice.service.JwtService;
 
+@Tag(name = "Auth Controller")
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
