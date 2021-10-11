@@ -68,8 +68,8 @@ public class JwtUtil {
     public List<LoginServerResponseDto> getObjectFromToken(String token, String name) {
         return (List<LoginServerResponseDto>) Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-                .build().
-                parseClaimsJws(token).getBody().get(name);
+                .build()
+                .parseClaimsJws(token).getBody().get(name);
     }
 
     public String generateAccessTokenObject(LoginServerResponseDto object) {

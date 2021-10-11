@@ -11,7 +11,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterClientResponseDto {
-    private UUID id;
     private String email;
     @JsonProperty("first_name")
     private String firstName;
@@ -21,4 +20,5 @@ public class RegisterClientResponseDto {
     private String organization;
     private String address;
     private boolean enabled;
+    private boolean blocked;
 }

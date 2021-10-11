@@ -28,4 +28,6 @@ public class LoginClientResponseDto {
     private String address;
     private boolean enabled;
     private boolean blocked;
+    @JsonProperty("public_key")
+    private String publicKey;
 }
