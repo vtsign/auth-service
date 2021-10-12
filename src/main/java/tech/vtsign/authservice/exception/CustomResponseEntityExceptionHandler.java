@@ -107,9 +107,9 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler(value = {MalformedJwtException.class, SignatureException.class})
     public final ResponseEntity<Object> handleTokenInvalid(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
-                new ExceptionResponse(new Date(), "Token invalid", request.getDescription(false), HttpStatus.BAD_REQUEST.value());
+                new ExceptionResponse(new Date(), "Token invalid", request.getDescription(false), HttpStatus.UNAUTHORIZED.value());
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
