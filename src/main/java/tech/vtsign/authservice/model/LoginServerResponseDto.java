@@ -23,10 +23,7 @@ public class LoginServerResponseDto {
     private String address;
     private boolean enabled;
     private boolean blocked;
-    @JsonProperty("public_key")
-    private String publicKey;
-    @JsonProperty("private_key")
-    private String privateKey;
+    private List<Signature> signatures;
     private List<Role> roles;
     private List<Permission> permissions;
 }

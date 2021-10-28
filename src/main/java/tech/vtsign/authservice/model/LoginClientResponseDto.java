@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -28,6 +29,5 @@ public class LoginClientResponseDto {
     private String address;
     private boolean enabled;
     private boolean blocked;
-    @JsonProperty("public_key")
-    private String publicKey;
+    private List<Signature> signatures;
 }
