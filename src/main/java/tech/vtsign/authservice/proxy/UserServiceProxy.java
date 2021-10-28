@@ -12,12 +12,12 @@ import tech.vtsign.authservice.model.RegisterServerResponseDto;
 
 @FeignClient(name = "user-service")
 public interface UserServiceProxy {
-    @GetMapping("/user/")
+    @GetMapping("/user/apt/")
     LoginServerResponseDto retrieveUser(@RequestParam String email);
 
-    @PostMapping("/user/register")
+    @PostMapping("/user/apt/register")
     RegisterServerResponseDto register(@RequestBody RegisterServerRequestDto registerServerRequestDto);
 
-    @PostMapping("/user/login")
+    @PostMapping("/user/apt/login")
     LoginServerResponseDto login(@RequestBody LoginServerRequestDto loginServerRequestDto);
 }
