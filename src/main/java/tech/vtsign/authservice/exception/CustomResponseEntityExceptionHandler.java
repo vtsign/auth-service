@@ -81,7 +81,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         return new ResponseEntity<>(exceptionResponse, UnauthorizedException.status);
     }
     @ExceptionHandler(NotFoundException.class)
-    public final ResponseEntity<ExceptionResponse> handleNotFoundException(UnauthorizedException ex, WebRequest request) {
+    public final ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false), NotFoundException.status.value());
 
@@ -97,7 +97,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     }
 
     @ExceptionHandler(TokenMissingException.class)
-    public final ResponseEntity<ExceptionResponse> handleTokenMissingException(UnauthorizedException ex, WebRequest request) {
+    public final ResponseEntity<ExceptionResponse> handleTokenMissingException(TokenMissingException ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false), TokenMissingException.status.value());
 
