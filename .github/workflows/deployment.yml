@@ -55,7 +55,7 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  
+
   telegramNotification:
     name: Telegram Notification
     runs-on: ubuntu-latest

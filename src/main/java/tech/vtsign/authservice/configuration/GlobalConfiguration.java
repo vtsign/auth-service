@@ -8,5 +8,7 @@ import tech.vtsign.authservice.proxy.FeignCustomErrorDecoder;
 @Configuration
 public class GlobalConfiguration {
     @Bean
-    public ErrorDecoder errorDecoder() { return new FeignCustomErrorDecoder();}
+    public ErrorDecoder errorDecoder() {
+        return new FeignCustomErrorDecoder();
+    }
 }
