@@ -28,4 +28,6 @@ public class LoginClientResponseDto {
     private String address;
     private boolean enabled;
     private boolean blocked;
+    private long balance;
+    private String avatar;
 }
