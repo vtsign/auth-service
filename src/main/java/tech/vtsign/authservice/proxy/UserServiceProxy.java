@@ -18,6 +18,9 @@ public interface UserServiceProxy {
     @PostMapping("/user/apt/register")
     RegisterServerResponseDto register(@RequestBody RegisterServerRequestDto registerServerRequestDto);
 
+    @PostMapping("/user/apt/register2")
+    RegisterServerResponseDto register2(@RequestBody RegisterServerRequestDto registerServerRequestDto);
+
     @PostMapping("/user/apt/login")
     LoginServerResponseDto login(@RequestBody LoginServerRequestDto loginServerRequestDto);
 }

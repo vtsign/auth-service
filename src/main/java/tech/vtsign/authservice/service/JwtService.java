@@ -22,6 +22,15 @@ public class JwtService {
         return registerClientResponseDto;
     }
 
+    public RegisterClientResponseDto register2(RegisterClientRequestDto registerClientRequestDto) {
+        RegisterServerRequestDto registerServerRequestDto = new RegisterServerRequestDto();
+        BeanUtils.copyProperties(registerClientRequestDto, registerServerRequestDto);
+        RegisterServerResponseDto registerServerResponseDto = userServiceProxy.register2(registerServerRequestDto);
+        RegisterClientResponseDto registerClientResponseDto = new RegisterClientResponseDto();
+        BeanUtils.copyProperties(registerServerResponseDto, registerClientResponseDto);
+        return registerClientResponseDto;
+    }
+
     public LoginClientResponseDto login(LoginClientRequestDto loginClientRequestDto) {
         LoginServerRequestDto loginServerRequestDto = new LoginServerRequestDto();
         BeanUtils.copyProperties(loginClientRequestDto, loginServerRequestDto);

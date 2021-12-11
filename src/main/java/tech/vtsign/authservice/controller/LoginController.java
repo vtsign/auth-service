@@ -78,6 +78,28 @@ public class LoginController {
     }
 
     @Hidden
+    @Operation(summary = "Register account")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Success, user registered",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = RegisterClientResponseDto.class))
+                    }),
+            @ApiResponse(responseCode = "419", description = "Missing require field see message for more details",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionResponse.class))
+                    }),
+            @ApiResponse(responseCode = "409", description = "Email is already in use",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionResponse.class))
+                    })
+    })
+    @PostMapping("/register2")
+    public ResponseEntity<?> register2(@RequestBody RegisterClientRequestDto registerClientRequestDto) {
+        RegisterClientResponseDto register = jwtService.register2(registerClientRequestDto);
+        return ResponseEntity.ok(register);
+    }
+
+    @Hidden
     @PostMapping("/jwt")
     public ResponseEntity<?> generateJwt(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
