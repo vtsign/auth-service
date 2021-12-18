@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -30,4 +31,6 @@ public class LoginClientResponseDto {
     private boolean blocked;
     private long balance;
     private String avatar;
+    private List<Role> roles;
+    private List<Permission> permissions;
 }
