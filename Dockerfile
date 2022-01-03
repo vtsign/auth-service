@@ -22,6 +22,10 @@ RUN ./mvnw package -Dmaven.test.skip=true
 FROM adoptopenjdk/openjdk11:jre-11.0.11_9-alpine as production
 WORKDIR /app
 EXPOSE 8100
+
 ENV CONFIG_SERVER_URI=http://localhost:8888
+ENV PROFILE=dev
+ENV HOST=localhost
+
 COPY --from=build /app/target/*.jar ./
 CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app/auth-service.jar"]
