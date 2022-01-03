@@ -13,7 +13,7 @@ import tech.vtsign.authservice.proxy.FeignCustomErrorDecoder;
 public class GlobalConfiguration {
     @Value("${tech.vtsign.api-url}")
     private String apiUrl;
-    @Value("${springdoc.swagger-ui.path}")
+    @Value("${server.servlet.context-path}")
     private String path;
     @Bean
     public ErrorDecoder errorDecoder() {
